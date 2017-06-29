@@ -23,4 +23,23 @@ public class Util {
         node.right = createTree(arr, mid + 1, end);
         return node;
     }
+
+    public static String toString(int [][] twoDArray) {
+        int rowCount = twoDArray.length;
+        int colCount = twoDArray[0].length;
+        StringBuilder builder = new StringBuilder();
+        builder.append("[ \n");
+
+        for(int i = 0; i < rowCount; i++) {
+            builder.append(" [ ");
+            for(int j = 0; j < colCount; j++) {
+                builder.append(twoDArray[i][j]);
+                builder.append(" ");
+            }
+            builder.append("]");
+            builder.append("\n");
+        }
+        builder.append("]");
+        return builder.toString();
+    }
 }

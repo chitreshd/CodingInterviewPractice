@@ -21,11 +21,13 @@ public class RegularExpressionMatchingTest {
         isMatch("ab", ".*",true);
         isMatch("aab", "c*a*b",true);
         isMatch("aaa", "ab*ac*a", true);
+        isMatch("aaa", "a*a", true);
+        isMatch("aaa", "ab*a*c*a", true);
     }
 
     private void isMatch(String s, String p, boolean expected) {
         RegularExpressionMatching solution = new RegularExpressionMatching();
-        assertEquals(solution.isMatchSolutionFromLeetCode1(s,p), expected);
+        assertEquals(solution.isMatchSolutionByMySelf(s,p), expected);
 
     }
 

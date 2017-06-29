@@ -37,7 +37,120 @@ public class RegularExpressionMatching {
         return dp[s.length()][p.length()];
     }
 
+    /**
+     * Following solution uses dynamic programming - tabulation method.
+     * Idea:
+     * Let p be pattern and s be text to be matched and j and i to be the
+     * pointers/indexes for each of them respectively.
+     * Also consider a boolean array dp where rows represent each char in s
+     * and columns represent each char in j. so dp[i][j] is match between s till i and p till j.
+     * We need to go to the end of the pattern and string to determine the match.
+     * Why can't i fail fast? Consider s = y and p = x*y now s[0] != p[0], if we fail fast it
+     * would be wrong because pattern says: 0 or more character of x.
+     * Thus we need to carry forward the previously calculated results and move forward.
+     *
+     * if p[j] == s[i] || p[j] == '.':
+     *      dp[i][j] = dp[i-1][j-1]
+     * else if p[j] == '*':
+     *      dp[i][j] = dp[i][j - 2] // assumes 0 occurrences of x*
+     *      if p[j - 1] == s[i] || p[j - 1] == '.' // 1 or more occurrences
+     *          dp[i][j] = dp[i][j] | dp[i - 1][j] // 1a: explanation below
+     *      else:
+     *          dp[i][j] = false;
+     *
+     * 1a:
+     *  Consider p = xa* and s = xaa now for i = 2, j = 2, p[2] == '*'
+     *  and p[j-1] i.e. p[1] == s[2] since, there is a match we would rely or previous results.
+     *  We would like to check if xa* (p) matches xa (s). Hence i - 1, j as indexes.
+     *
+     * @param text
+     * @param pattern
+     * @return
+     */
+    public boolean isMatchSolutionByMySelf(String text, String pattern) {
+        char s [] = text.toCharArray();
+        char p [] = pattern.toCharArray();
 
+        // since dp[0][0] is start state we need length + 1 for rows and columns.
+        boolean dp[][] = new boolean[s.length + 1][p.length + 1];
+        dp[0][0] = true;
+
+        // initialize 0th row
+        for(int j= 1; j <= p.length; j++) {
+            if(p[j - 1] == '*') {
+                dp[0][j] = dp[0][j - 2];
+            }
+
+        }
+
+        for(int i = 1; i < dp.length; i++) {
+            for(int j = 1; j < dp[0].length; j++) {
+
+                if(p[j - 1] == '.' || p[j - 1] == s[i - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else if (p[j - 1] == '*') {
+                    dp[i][j] = dp[i][j - 2];
+
+                    if(p[j - 2] == '.' || p[j - 2] == s[i - 1]) {
+                        dp[i][j] = dp[i][j] | dp[i - 1][j];
+                    }
+
+                } else {
+                    dp[i][j] = false;
+                }
+            }
+        }
+        return dp[s.length][p.length];
+    }
+    /**
+     * Following solution is buggy because it fails fast.
+     * A pattern and string has to be checked till the end to determine if it matches or not.
+     * Below method tries to fail fast, which is wrong.
+     * @param s
+     * @param p
+     * @return
+     */
+    public boolean isMatchSolutionByMySelfBuggy(String s, String p) {
+        int si = 0;
+        int pi = 0;
+        char lastCharMatched = ' ';
+
+        while(si < s.length() && pi < p.length()) {
+            if( match(s.charAt(si), p.charAt(pi)) ) {
+                //perfect match
+                lastCharMatched = p.charAt(pi);
+                pi++;
+                si++;
+
+            } else if( match(s.charAt(si), lastCharMatched) && (p.charAt(pi) == '*')) {
+                pi++;
+                si++;
+            } else if( match(s.charAt(si), lastCharMatched) && (p.charAt(pi - 1) == '*')) {
+                si++;
+                /*while(si < s.length() && match(s.charAt(si), lastCharMatched)) { // s = aaa p = a*
+                    si++;
+                }
+                pi++;*/
+                //si++;
+            } else if( s.charAt(si) != p.charAt(pi) && (pi < (p.length() - 1) && p.charAt(pi + 1) == '*')) {
+                pi +=2;
+
+            } else {
+                return false;
+            }
+
+        }
+
+
+        /*if(si == s.length() && ( pi == p.length() || ( pi == p.length() - 1 && p.charAt(pi) == '*'))) {
+            return true;
+        }*/
+        return ( si == s.length() && pi == p.length() );
+    }
+
+    private boolean match(char s, char p) {
+        return (s == p || p == '.');
+    }
     public boolean isMatchSolutionFromLeetCode1(String s, String p){
 
         int m = s.length() + 1;
