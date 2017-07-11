@@ -93,4 +93,95 @@ Ans: For strings: [ abc, ac, bac, ace ] , create a tree like following:
       |     |           |
       c(w)  e(w)        c(w)
 
-      
+
+5. Maximum Product of Word Lengths
+------------------------------------
+Given a string array words, find the maximum value of length(word[i]) * length(word[j]) where the two words do not share common letters. You may assume that each word will contain only lower case letters. If no such two words exist, return 0.
+
+Example 1:
+Given ["abcw", "baz", "foo", "bar", "xtfn", "abcdef"]
+Return 16
+The two words can be "abcw", "xtfn".
+
+Example 2:
+Given ["a", "ab", "abc", "d", "cd", "bcd", "abcd"]
+Return 4
+The two words can be "ab", "cd".
+
+Example 3:
+Given ["a", "aa", "aaa", "aaaa"]
+Return 0
+No such pair of words.
+
+Ans: a. Sort the words by length. b. create char set for each word. c. iterate over list of char sets to identify
+    which pair produces max product. O(n^2)
+Mistake: An optimization can be to use char masks instead of char set in step b.
+Example: "abc", set: [a,b,c], char mask using int (binary representation): 000111
+         "def", set: [d,e,f], char mask using int (binary representation): 111000
+
+         Now comparison for dissimilarity is just a matter of (000111 & 111000 == 0) which is much faster than
+         checking each char in other set.
+Gotcha: Consider maskSet for identifying dissimilarities
+
+6. Wiggle Sort
+-----------------
+Given an unsorted array nums, reorder it in-place such that nums[0] <= nums[1] >= nums[2] <= nums[3]....
+
+For example, given nums = [3, 5, 2, 1, 6, 4], one possible answer is [1, 6, 2, 5, 3, 4].
+
+Ans: Thus the problem is that all the odd index numbers should be greater than its adjacent even index numbers.
+Iterate over the array:
+    if the index is odd: if nums[i-1] > nums[i] : swap
+    if the index is even: if nums[i - 1] < nums[i]: swap
+
+Mistake: Initially thought that wiggle in any order is fine. i.e. num[0] > num[1] or num[0] < num[1].
+But the problem clearly states the wiggle order. So be cautious of the fine details - or at-least confirm this assumption
+
+7. Count of Smaller Number After Self: [H]
+---------------------------------------
+You are given an integer array nums and you have to return a new counts array.
+The counts array has the property where counts[i] is the number of smaller elements to the right of nums[i].
+Example:
+
+Given nums = [5, 2, 6, 1]
+
+To the right of 5 there are 2 smaller elements (2 and 1).
+To the right of 2 there is only 1 smaller element (1).
+To the right of 6 there is 1 smaller element (1).
+To the right of 1 there is 0 smaller element.
+Return the array [2, 1, 1, 0].
+
+8. Island Permiter [E]
+-----------------------
+
+9. Find All Numbers Disappeared in an Array [E]
+-----------------------------------------------
+Given an array of integers where 1 ? a[i] ? n (n = size of array), some elements appear twice and others appear once.
+
+Find all the elements of [1, n] inclusive that do not appear in this array.
+
+Could you do it without extra space and in O(n) runtime? You may assume the returned list does not count as extra space.
+
+Example:
+
+Input:
+[4,3,2,7,8,2,3,1]
+
+Output:
+[5,6]
+
+Ans: In first pass, mark the index corresponding to the value as negative. i.e. in above array n[0] = 4. thus,
+mark n[3] as negative. why n[3]? because numbers start from 1.
+how to mark negative? n[3] = 7, n[3] = -7
+in second pass, look for the indexes that has positive value, let it be x. then x + 1 will be one of the missing
+number. how? let x be 1. So if 1 is positive, it means in the array we never saw a value 2, or else we would have
+marked n[x - 1] i.e. n[1] as -ve.
+
+Gotchas
+1. If the values in an array are bounded, they can be marked using -ve and index can be used as identifier.
+2. We need to make sure in the above solution that we dont mark a -ve again -ve thus making it +ve.
+3. Also need to be aware of IndexOutOfBounds, hence use math.abs
+
+
+
+

@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created by cdeshpande on 5/28/17.
+ * Solution Ref: https://discuss.leetcode.com/topic/39656/short-java-binary-index-tree-beat-97-33-with-detailed-explanation/2
  */
 public class CountOfSmallerNumbersAfterSelf {
 
@@ -72,7 +73,7 @@ public class CountOfSmallerNumbersAfterSelf {
     public static void main(String[] args) {
 
         testCountSelf();
-        //runPrints();
+        runPrints();
     }
 
     private static void runPrints() {
