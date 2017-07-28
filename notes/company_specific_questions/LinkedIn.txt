@@ -35,3 +35,97 @@ mistakes:
 		had to be changed to use Int as key instead of String: due to strick time bounds. Although, this doesnt improve on my time complexity, it improves on time execution.
 
 
+2. Minimum Window Substring [H]
+------------------------------------
+Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+
+For example,
+S = "ADOBECODEBANC"
+T = "ABC"
+Minimum window is "BANC".
+
+Note:
+If there is no such window in S that covers all characters in T, return the empty string "".
+If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
+
+Answer:
+Use two pointers left and right. first advance right pointers till we have captured all the chars. We got a window.
+Now advance the left pointer thus reducing the window. If we find one of the chars have gone out of curr window,
+then advance the right to try and capture the character again. Repeat this process, everytime
+noting down the min of windows. At the end, we should have found our minimum window.
+
+
+3. Merge k Sorted Lists [H]
+------------------------------------
+Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+
+Answer: Use k size min heap.
+Mistakes: During amazon interview, took a long time coming up with this solution.
+
+4. Serialize and Deserialize Binary Tree [h]
+------------------------------------------
+Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.
+
+Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.
+
+For example, you may serialize the following tree
+
+    1
+   / \
+  2   3
+     / \
+    4   5
+as "[1,2,3,null,null,4,5]", just the same as how LeetCode OJ serializes a binary tree. You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.
+
+Note: Do not use class member/global/static variables to store states. Your serialize and deserialize algorithms should be stateless.
+
+Answer: Pre-order traversal and mark null child with 'X'. To deserialize, first one would be root. Then recursively call deserialize
+on rest of the list to get left and right children. When hit with 'X' return null.
+
+5. Maximum Product Subarray [M]
+------------------------------
+Find the contiguous subarray within an array (containing at least one number) which has the largest product.
+
+For example, given the array [2,3,-2,4],
+the contiguous subarray [2,3] has the largest product = 6.
+
+Answer: Its little difficult to come up with the solution. General approach is to maintain
+max and min at each index. Why min? well when we have 2 -ves in array, just maintaining
+max, would make us "forget" about the real max.
+Example: Consider following where we only maintain max
+    2 -2 -1
+mx  2 -2 -1
+So max would be 2, but the ans is 4
+Now if we maintain min also
+    2 -2 -1
+mx  2 -2  4 <-- min from -2 helped in calculating real max.
+mn  2 -4 -1
+
+if(A[i] < 0 ): swap(mx[i-1], mn[i-1])
+mx[i] = max(A[i], A[i] * mx[i - 1])
+mn[i] = min(A[i], A[i] * mn[i - 1])
+
+Mistakes:
+1. jumped to solution too early. didnt consider 2 negatives
+2. bumped into the correct idea while brainstorming, but didnt approach it with positive attitude, again pre-maturely concluded it wont work
+
+6. Pow(x, n) [M]
+-------------
+Implement pow(x, n).
+
+Approache tried:
+a. divide and rule: calculate pow of x for i < n and then merge the result.
+pow(x, n) = pow(x, n/2) * pow(x, n/2)
+and used memoization to store the results.
+
+mistakes:
+- didnt account for negative power, actually didnt even occur to me
+- for result array didnt consider upper bound, which would mean allocating lot of unnecessary space
+
+Answer:
+Although above approach is correct, it didnt meet tighter time bounds for leetcode.
+If n is even i.e. 6 then n/2 = 3. Calculating pow(x,3) is enough to get pow(x,6): pow(x,3) * pow(x,3).
+The reason I bended towards memoization was to handle odd powers. n = 7, n/2 = 3 but i need to also calculate
+pow(x,4) in a separate recursion tree.
+But the simple solution for odd powers is: pow(x,n/2) * pow(x,n/2) * x. In above example it would be
+pow(x,3) * pow(x,3) * x = pow(x,7)
