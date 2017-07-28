@@ -113,7 +113,7 @@ Mistakes:
 -------------
 Implement pow(x, n).
 
-Approache tried:
+Approach tried:
 a. divide and rule: calculate pow of x for i < n and then merge the result.
 pow(x, n) = pow(x, n/2) * pow(x, n/2)
 and used memoization to store the results.
@@ -129,3 +129,20 @@ The reason I bended towards memoization was to handle odd powers. n = 7, n/2 = 3
 pow(x,4) in a separate recursion tree.
 But the simple solution for odd powers is: pow(x,n/2) * pow(x,n/2) * x. In above example it would be
 pow(x,3) * pow(x,3) * x = pow(x,7)
+
+7. Evaluate Reverse Polish Notation [M]
+---------------------------------------
+Evaluate the value of an arithmetic expression in Reverse Polish Notation.
+
+Valid operators are +, -, *, /. Each operand may be an integer or another expression.
+
+Some examples:
+  ["2", "1", "+", "3", "*"] -> ((2 + 1) * 3) -> 9
+  ["4", "13", "5", "/", "+"] -> (4 + (13 / 5)) -> 6
+
+Answer:
+solve using stack
+
+Kudos: Was able to crack this in single blow :)
+
+8.
