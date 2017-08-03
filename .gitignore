@@ -22,3 +22,6 @@ build.xml
 ebay-build.xml
 4cc.checksum
 /.metadata
+.classpath
+.project
+.settings
