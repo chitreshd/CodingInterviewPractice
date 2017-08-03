@@ -1,0 +1,39 @@
+1. Longest Substring Without Repeating Characters [M]
+------------------------------------------------------
+Given a string, find the length of the longest substring without repeating characters.
+
+Examples:
+
+Given "abcabcbb", the answer is "abc", which the length is 3.
+Given "bbbbb", the answer is "b", with the length of 1.
+Given "pwwkew", the answer is "wke", with the length of 3. Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+
+Answer: sliding window. keep pushing end and adding chars to "seen" hash set. whenever
+a new char in s is found in "seen", we found duplicate. So keep sliding start pointer
+to right until char c is no longer in "seen". As we slide start, keep removing the
+startIndex char from "seen".
+
+Mistakes: FLAWLESS VICTORY
+
+2. Longest Palindromic Substring [M]
+------------------------------------------------------
+Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+
+Example:
+Input: "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+Example:
+Input: "cbbd"
+Output: "bb"
+
+Answer: for each index as a center get the max palindrome for that index. compare this max with global max. end of
+iteration we should have a max palindrome.
+
+mistakes:
+- incorrectly guessed the brute force complexity
+- above mistake prevented me from getting to a optimal solution as I thought that the sub-optimal solution also have same time complexity
+
+Note: the brute force is O(n^3), Explanation: Brute force solution is to get all possible palindromes. We get this by
+starting from biggest window, sliding it and during every slide, checking if the substring is palindrome or not.
+Thus (# of windows) * (# of slides per window ) * (# check for palindrom ) nearly = O(n^3)
