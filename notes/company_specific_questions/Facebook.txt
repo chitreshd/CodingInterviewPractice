@@ -75,3 +75,8 @@ else if p[j] == '*':
  Consider p = xa* and s = xaa now for i = 2, j = 2, p[2] == '*'
  and p[j-1] i.e. p[1] == s[2] since, there is a match we would rely or previous results.
  We would like to check if xa* (p) matches xa (s). Hence i - 1, j as indexes.
+
+Regular expression can be expressed as a state machine. Can, suggest this method first
+in the interview. It would be much easy to code it and explain it.
+Start by creating a state machine for pattern. Then, start feeding the input string
+to the pattern state machine.
