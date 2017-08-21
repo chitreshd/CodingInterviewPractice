@@ -80,3 +80,22 @@ Regular expression can be expressed as a state machine. Can, suggest this method
 in the interview. It would be much easy to code it and explain it.
 Start by creating a state machine for pattern. Then, start feeding the input string
 to the pattern state machine.
+
+3. Minimum Window Substring [H]
+------------------------------------
+Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+
+For example,
+S = "ADOBECODEBANC"
+T = "ABC"
+Minimum window is "BANC".
+
+Note:
+If there is no such window in S that covers all characters in T, return the empty string "".
+If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
+
+Answer:
+Use two pointers left and right. first advance right pointers till we have captured all the chars. We got a window.
+Now advance the left pointer thus reducing the window. If we find one of the chars have gone out of curr window,
+then advance the right to try and capture the character again. Repeat this process, everytime
+noting down the min of windows. At the end, we should have found our minimum window.
