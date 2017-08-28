@@ -48,3 +48,42 @@ worry about random pointer. In second pass, use the map to retreive the cloneNod
 and assign it to the cloneNode.
 
 Mistakes: FLAWLESS VICTORY
+
+4. Word Ladder II [H]
+---------------------
+Given two words (beginWord and endWord), and a dictionary's word list, <u>find all</u> shortest transformation sequence
+(s) from beginWord to endWord, such that:
+
+ Only one letter can be changed at a time
+ Each transformed word must exist in the word list. Note that beginWord is not a transformed word.
+ For example,
+
+ Given:
+ beginWord = "hit"
+ endWord = "cog"
+ wordList = ["hot","dot","dog","lot","log","cog"]
+ Return
+ [
+ ["hit","hot","dot","dog","cog"],
+ ["hit","hot","lot","log","cog"]
+ ]
+ Note:
+ Return an empty list if there is no such transformation sequence.
+ All words have the same length.
+ All words contain only lowercase alphabetic characters.
+ You may assume no duplicates in the word list.
+ You may assume beginWord and endWord are non-empty and are not the same.
+
+ Solution:
+ Create paths by using character iteration
+ Use BFS to traverse these paths
+ Maintain a map of word: List of "from". ( this helps in generating all lists through
+ backtracking)
+ In BFS, its important to check if a node is visited before adding it to the "queue"
+ (Its different from DFS where we check visit condition after popping item from stack )
+
+ Mistakes:
+ Timeout error: One optimization I didn't consider is using Dijisktra's search.
+ Although nobody would ask me to code, but it would be worth mentioning.
+ https://discuss.leetcode.com/topic/2857/share-two-similar-java-solution-that-accpted-by-oj
+
