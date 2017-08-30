@@ -49,41 +49,227 @@ and assign it to the cloneNode.
 
 Mistakes: FLAWLESS VICTORY
 
-4. Word Ladder II [H]
+4. Word Ladder II [H] ( Not yet implemented )
 ---------------------
 Given two words (beginWord and endWord), and a dictionary's word list, <u>find all</u> shortest transformation sequence
 (s) from beginWord to endWord, such that:
 
- Only one letter can be changed at a time
- Each transformed word must exist in the word list. Note that beginWord is not a transformed word.
- For example,
+Only one letter can be changed at a time
+Each transformed word must exist in the word list. Note that beginWord is not a transformed word.
+For example,
 
- Given:
- beginWord = "hit"
- endWord = "cog"
- wordList = ["hot","dot","dog","lot","log","cog"]
- Return
- [
- ["hit","hot","dot","dog","cog"],
- ["hit","hot","lot","log","cog"]
- ]
- Note:
- Return an empty list if there is no such transformation sequence.
- All words have the same length.
- All words contain only lowercase alphabetic characters.
- You may assume no duplicates in the word list.
- You may assume beginWord and endWord are non-empty and are not the same.
+Given:
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log","cog"]
+Return
+[
+["hit","hot","dot","dog","cog"],
+["hit","hot","lot","log","cog"]
+]
+Note:
+Return an empty list if there is no such transformation sequence.
+All words have the same length.
+All words contain only lowercase alphabetic characters.
+You may assume no duplicates in the word list.
+You may assume beginWord and endWord are non-empty and are not the same.
 
- Solution:
- Create paths by using character iteration
- Use BFS to traverse these paths
- Maintain a map of word: List of "from". ( this helps in generating all lists through
- backtracking)
- In BFS, its important to check if a node is visited before adding it to the "queue"
- (Its different from DFS where we check visit condition after popping item from stack )
+Solution:
+Create paths by using character iteration
+Use BFS to traverse these paths
+Maintain a map of word: List of "from". ( this helps in generating all lists through
+backtracking)
+In BFS, its important to check if a node is visited before adding it to the "queue"
+(Its different from DFS where we check visit condition after popping item from stack )
 
- Mistakes:
- Timeout error: One optimization I didn't consider is using Dijisktra's search.
- Although nobody would ask me to code, but it would be worth mentioning.
- https://discuss.leetcode.com/topic/2857/share-two-similar-java-solution-that-accpted-by-oj
+Mistakes:
+Timeout error: One optimization I didn't consider is using Dijisktra's search.
+Although nobody would ask me to code, but it would be worth mentioning.
+https://discuss.leetcode.com/topic/2857/share-two-similar-java-solution-that-accpted-by-oj
+
+5. LFU Cache [H] ( Not yet implemented )
+------------------------------------------
+Design and implement a data structure for Least Frequently Used (LFU) cache. It should support the following
+operations: get and put.
+
+get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+put(key, value) - Set or insert the value if the key is not already present. When the cache reaches its capacity, it should invalidate the least frequently used item before inserting a new item. For the purpose of this problem, when there is a tie (i.e., two or more keys that have the same frequency), the least recently used key would be evicted.
+
+Follow up:
+Could you do both operations in O(1) time complexity?
+
+Example:
+
+LFUCache cache = new LFUCache( 2 /* capacity */ );
+
+cache.put(1, 1);
+cache.put(2, 2);
+cache.get(1);       // returns 1
+cache.put(3, 3);    // evicts key 2
+cache.get(2);       // returns -1 (not found)
+cache.get(3);       // returns 3.
+cache.put(4, 4);    // evicts key 1.
+cache.get(1);       // returns -1 (not found)
+cache.get(3);       // returns 3
+cache.get(4);       // returns 4
+
+
+Solution From: https://discuss.leetcode.com/topic/69137/java-o-1-accept-solution-using-hashmap-doublelinkedlist-and-linkedhashset
+Two HashMaps are used, one to store <key, value> pair, another store the <key, node>.
+I use double linked list to keep the frequent of each key. In each double linked list node, keys with the same count are saved using java built in LinkedHashSet. This can keep the order.
+Every time, one key is referenced, first find the current node corresponding to the key, If the following node exist and the frequent is larger by one, add key to the keys of the following node, else create a new node and add it following the current node.
+All operations are guaranteed to be O(1).
+
+6. Merge k Sorted Lists [H]
+------------------------------------
+Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+
+Answer: Use k size min heap.
+Mistakes: During amazon interview, took a long time coming up with this solution.
+
+7. Sliding Window Maximum [H]
+------------------------------------
+
+Given an array nums, there is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position.
+
+For example,
+Given nums = [1,3,-1,-3,5,3,6,7], and k = 3.
+
+Window position                Max
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+Therefore, return the max sliding window as [3,3,5,5,6,7].
+
+Note:
+You may assume k is always valid, ie: 1 ? k ? input array's size for non-empty array.
+
+Follow up:
+Could you solve it in linear time?
+
+Solutions:
+1. Using PQ: One way is to use Heap/Priority Queue. Maintain a heap of size k. Add/Remove the items in it as the window
+is sliding. For each slide, peek the top which will be max.
+
+2. Using Double-ended-queue: Maintain a double ended queue (dequeue) of interesting items. Deque is maintained in
+descending order. Head/First is max and Tail/Last is min. Remove from head when the index becomes out of range
+and remove from the tail when the current value is greater than the tail value.
+
+Assume (index, value)
+
+Window position                Max       Queue
+---------------               -----     -------
+[1  3  -1] -3  5  3  6  7       3       [(1:3), (2:-1)] // removed (0:1) as 1 is less than 3
+ 1 [3  -1  -3] 5  3  6  7       3       [(1:3), (2:-1), (3: -3)]
+ 1  3 [-1  -3  5] 3  6  7       5       [(4:5)] // removed (1:3) as index was out of range and removed (2:-1), (3:
+                                                //    -3) as its values were less than 5
+ 1  3  -1 [-3  5  3] 6  7       5       [(4:5), (5:3)]
+ 1  3  -1  -3 [5  3  6] 7       6       [(6:6)] // removed everything else as values were less than 6
+ 1  3  -1  -3  5 [3  6  7]      7       [(7:7)] // removed everything else as values were less than 7
+
+
+8. Serialize and Deserialize Binary Tree [H]
+---------------------------------------------
+Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.
+
+Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.
+
+For example, you may serialize the following tree
+
+   1
+  / \
+ 2   3
+    / \
+   4   5
+as "[1,2,3,null,null,4,5]", just the same as how LeetCode OJ serializes a binary tree. You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.
+
+Note: Do not use class member/global/static variables to store states. Your serialize and deserialize algorithms should be stateless.
+
+Answer: Pre-order traversal and mark null child with 'X'. To deserialize, first one would be root. Then recursively call deserialize
+on rest of the list to get left and right children. When hit with 'X' return null.
+
+Mistakes: Although using json format for serializing and deserializing is a good way, writing it
+in a time bound interview is really difficult. Also, parsing would require lot of testing and
+there are higher chances of bug.
+!Tried writing a parser: took around 50 mins but still couldnt get away with bugs.
+
+9. String to Integer (atoi)
+----------------------------
+
+Implement atoi to convert a string to an integer.
+
+Hint: Carefully consider all possible input cases. If you want a challenge, please do not see below and ask yourself what are the possible input cases.
+
+Notes: It is intended for this problem to be specified vaguely (ie, no given input specs). You are responsible to gather all the input requirements up front.
+
+Solution:
+The challenge is in gathering all the requirements, so ask following questions:
+1. Will there be whitespaces?
+2. What's the allowed range for integers?
+3. What should be done if one of the characters is invalid integer?
+4. Is the input signed or unsigned?
+
+Sample Requirements:
+The function first discards as many whitespace characters as necessary until the first non-whitespace character is found. Then, starting from this character, takes an optional initial plus or minus sign followed by as many numerical digits as possible, and interprets them as a numerical value.
+The string can contain additional characters after those that form the integral number, which are ignored and have no effect on the behavior of this function.
+If the first sequence of non-whitespace characters in str is not a valid integral number, or if no such sequence exists because either str is empty or it contains only whitespace characters, no conversion is performed.
+If no valid conversion could be performed, a zero value is returned. If the correct value is out of the range of representable values, INT_MAX (2147483647) or INT_MIN (-2147483648) is returned.
+
+
+10. Word Ladder [M] (Not Yet Implemented)
+------------------------------------------
+
+Given two words (beginWord and endWord), and a dictionary's word list, find the length of shortest transformation sequence from beginWord to endWord, such that:
+
+Only one letter can be changed at a time.
+Each transformed word must exist in the word list. Note that beginWord is not a transformed word.
+For example,
+
+Given:
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log","cog"]
+As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
+return its length 5.
+
+Note:
+Return 0 if there is no such transformation sequence.
+All words have the same length.
+All words contain only lowercase alphabetic characters.
+You may assume no duplicates in the word list.
+You may assume beginWord and endWord are non-empty and are not the same.
+UPDATE (2017/1/20):
+The wordList parameter had been changed to a list of strings (instead of a set of strings). Please reload the code definition to get the latest changes.
+
+Solution:
+Using BFS to search through graph. The graph is constructed on fly using character transformations. Validity of
+words is decided based on dictionary.
+
+11. 3Sum [M]  (Not Yet Implemented)
+-------------------------------------
+Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+Note: The solution set must not contain duplicate triplets.
+For example, given array S = [-1, 0, 1, 2, -1, -4],
+
+A solution set is:
+[
+  [-1, 0, 1],
+  [-1, -1, 2]
+]
+
+Solution:
+[-1, 0, 1, 2, -1, -4]. For i = 0, i.e. -1, find all possible combinations using recursion.
+This is not time efficient.
+
+We can sort the array and move cursors. Fix 1, and run 2Sum on remaining list. O(n^2) solution.
+Mistakes:
+1. Recursion solution: Didnt think the recursion well, could have resolved lot of issues by using a test case
+2. Sorting solution : Didn't think about sorting the array to get the answer, this is a mistake because I already
+knew how to solve 2Sum using sorting approach. Basically, didnt apply extension of 2Sum problem.
+Another extension of 2Sum problem could have been to use hashmaps.
+So fix 1, and run 2Sum using either sorting or hashMap.
 
