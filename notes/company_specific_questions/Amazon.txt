@@ -116,8 +116,12 @@ cache.get(4);       // returns 4
 
 Solution From: https://discuss.leetcode.com/topic/69137/java-o-1-accept-solution-using-hashmap-doublelinkedlist-and-linkedhashset
 Two HashMaps are used, one to store <key, value> pair, another store the <key, node>.
-I use double linked list to keep the frequent of each key. In each double linked list node, keys with the same count are saved using java built in LinkedHashSet. This can keep the order.
-Every time, one key is referenced, first find the current node corresponding to the key, If the following node exist and the frequent is larger by one, add key to the keys of the following node, else create a new node and add it following the current node.
+I use double linked list to keep the frequent of each key.
+In each double linked list node, keys with the same count are saved using java built in LinkedHashSet.
+This can keep the order.
+Every time, one key is referenced, first find the current node corresponding to the key,
+If the following node exist and the frequent is larger by one, add key to the keys of the following node,
+else create a new node and add it following the current node.
 All operations are guaranteed to be O(1).
 
 6. Merge k Sorted Lists [H]
@@ -272,4 +276,27 @@ Mistakes:
 knew how to solve 2Sum using sorting approach. Basically, didnt apply extension of 2Sum problem.
 Another extension of 2Sum problem could have been to use hashmaps.
 So fix 1, and run 2Sum using either sorting or hashMap.
+
+12. Print Dependency Order ( Asked during onsite )
+---------------------------------------------------
+Given a list of dependencies, print the order in which it should be built.
+Example:
+{ A: B, C }
+{ B: D, E}
+{ C: D}
+print: {E,D,C,B,A}
+The problem also asked of detecting cycles.
+Mistakes:
+1. Implemented plain DFS, which printed the order but failed to detect the cycle.
+2. Plain DFS implementation using stack fails to identify the difference between nodes on stack and nodes on path
+leading to current node.
+Solution:
+While there is a well known algorithm ( Tarjan's algorithm ) to find cycles (strongly connected components),
+this problem can also be easily solved using DFS variant of Topological Sort.
+Ref: http://www.geeksforgeeks.org/detect-cycle-in-a-graph/
+In this DFS variant, we use recursion instead of stack.
+Mark the nodes as visited only when all of its neighbours have been visited.
+Mark the in-progress node as "in-stack" and pass it as a metadata to subsequent recursive calls.
+If a curr node is already in "in-stack" : it means we have detected a cycle.
+Also ref: CycleDetectionDirectedGraph for impelmentation.
 
