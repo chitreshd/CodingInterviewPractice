@@ -371,3 +371,21 @@ Perform binary search.
 Mistakes:
 FLAWLESS VICTORY
 
+16. Binary Search Tree Iterator [M]
+------------------------------------
+Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST.
+Calling next() will return the next smallest number in the BST.
+Note: next() and hasNext() should run in average O(1) time and uses O(h) memory, where h is the height of the tree.
+
+Solution:
+Use stack to keep track of the current node.
+Stack top is the smallest node.
+When stack is popped, push all the nodes to the left of right children of popped node.
+
+Mistake:
+1. Didn't quite understand what "next smallest means". not sure if I could i come up with the solution with this
+knowledge.
+
+Learning:
+When trying to keep track of stack or need to backtrack without using recursion: use stack.
+
