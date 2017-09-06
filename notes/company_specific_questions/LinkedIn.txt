@@ -143,6 +143,14 @@ Some examples:
 
 Answer:
 solve using stack
+If digit:
+    push to stack
+If operator:
+    pop last 2 values on stack
+    use the operator on these two values
+    push the new value to stack
+
+Finally, stack would have only one value, return this value.
 
 Kudos: Was able to crack this in single blow :)
 
@@ -198,3 +206,168 @@ mistakes:
     a. newInterval coming before start of interval list
     b. newInterval coming after end of interval list
 2. for merging newInterval into lists, didn't understand "out of range" concept clearly in the first pass
+
+10. Serialize and Deserialize Binary Tree [H]
+------------------------------------------------
+Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored
+in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or
+another computer environment.
+
+Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your
+serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized
+to a string and this string can be deserialized to the original tree structure.
+
+For example, you may serialize the following tree
+
+    1
+   / \
+  2   3
+     / \
+    4   5
+as "[1,2,3,null,null,4,5]", just the same as how LeetCode OJ serializes a binary tree.
+You do not necessarily need to follow this format, so please be creative and come up with different
+approaches yourself.
+
+Mistakes:
+Learning: Although using json format for serializing and deserializing is a good way, writing it
+ * in a time bound interview is really difficult. Also, parsing would require lot of testing and
+ * there are higher chances of bug.
+ * !Tried writing a parser: took around 50 mins but still couldnt get away with bugs.
+
+Solution:
+The idea is simple: print the tree in pre-order traversal and use "X" to denote null node and split node with ",".
+We can use a StringBuilder for building the string on the fly. For deserializing, we use a Queue to store the
+pre-order traversal and since we have "X" as null node, we know exactly how to where to end building subtress.
+
+11. Can I Win [H] ( Was also asked in onsite interview: 2014 )
+---------------------------------------------------------------
+
+Problem:
+In the "100 game," two players take turns adding, to a running total, any integer from 1..10. The player who
+first causes the running total to reach or exceed 100 wins.
+What if we change the game so that players cannot re-use integers?
+
+For example, two players might take turns drawing from a common pool of numbers of 1..15 without replacement
+until they reach a total >= 100.
+Given an integer maxChoosableInteger and another integer desiredTotal, determine if the first player to move
+can force a win, assuming both players play optimally.
+You can always assume that maxChoosableInteger will not be larger than 20 and desiredTotal will not be larger
+than 300.
+
+Example
+
+Input:
+maxChoosableInteger = 10
+desiredTotal = 11
+
+Output:
+false
+
+Explanation:
+No matter which integer the first player choose, the first player will lose.
+The first player can choose an integer from 1 up to 10.
+If the first player choose 1, the second player can only choose integers from 2 up to 10.
+The second player will win by choosing 10 and get a total = 11, which is >= desiredTotal.
+Same with other integers chosen by the first player, the second player will always win.
+
+Mistakes:
+1. Chose to go with approach of selecting every possible combination, but representation of the
+state of program wasnt very accurate. That prevented from thinking in memoization direction for
+optimization.
+2. Improved and clear representation helped me in memoization and thus forming proper recursion.
+3. Key: We dont know what the optimal solution is.
+So we need to let a player choose all the values in remaining pool of integers at each point.
+For an int value, for which the other player looses, then becomes the optimal move for the player
+at this recursion/decision level.
+4. Although i was able to get the problem correct with memoization, to get it accepted in leetcode, it
+had to be changed to use Int as key instead of String: due to strick time bounds. Although, this doesnt
+improve on my time complexity, it improves on time execution.
+
+actually i did start the solution starting in right direction, but the optimal selection threw me off
+
+Solution:
+Recursion can be used to represent decision making at each level. At each level of decision/recursion, the player
+gets to iterate over all the possible remaining choices (integer selection) and call the next level / or
+next player plays with remaining total value.
+Thus at each level a decision is being made: Given these choice, can a player win. Since this question is agnostic
+of player playing it, this is the basis of memoization.
+Used "usedBits" to generate hash for remaining choices. "usedBools" is used to mark un-used integeres.
+Base Case: If remainingTotal is <=0, it means earlier player played a move/selected an integer that hit or exceeded
+the desiredTotal. Thus return false.
+Recurrence Relation: If one of the choice resulted in winning of the player ( i.e. next level resulted false ),
+then the move qualifies as optimal move. So the iteration can be short-circuited and method can return true.
+
+12. Search for a Range [M]
+----------------------------------------
+
+Given an array of integers sorted in ascending order, find the starting and ending position of a given target value.
+Your algorithm's runtime complexity must be in the order of O(log n).
+If the target is not found in the array, return [-1, -1].
+
+For example,
+Given [5, 7, 7, 8, 8, 10] and target value 8,
+return [3, 4].
+
+Solution:
+Since, the array is sorted run a binary search and then iterate in either direction to find the range.
+
+Mistakes:
+FLAWLESS VICTORY
+
+13. Repeated DNA Sequence [M]
+-----------------------------
+All DNA is composed of a series of nucleotides abbreviated as A, C, G, and T, for example: "ACGAATTCCG".
+When studying DNA, it is sometimes useful to identify repeated sequences within the DNA.
+Write a function to find all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule.
+
+For example,
+Given s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT",
+
+Return:
+["AAAAACCCCC", "CCCCCAAAAA"].
+
+Solution: Create a 10 char sliding window. As the window is sliding, check the occurrence in cache, if its not
+add it, if found then we have our duplicate.
+
+Mistakes:
+
+14. Binary Tree Zigzag Level Order Traversal [M]
+------------------------------------------------
+Given a binary tree, return the zigzag level order traversal of its nodes' values. (ie, from left to right,
+then right to left for the next level and alternate between).
+
+For example:
+Given binary tree [3,9,20,null,null,15,7],
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its zigzag level order traversal as:
+[
+  [3],
+  [20,9],
+  [15,7]
+]
+
+Solution:
+Do level order traversal and then reverse alternate levels.
+
+15. Search for a Range [M]
+---------------------------
+Given an array of integers sorted in ascending order, find the starting and ending position of a given target value.
+Your algorithm's runtime complexity must be in the order of O(log n).
+If the target is not found in the array, return [-1, -1].
+
+For example,
+Given [5, 7, 7, 8, 8, 10] and target value 8,
+return [3, 4].
+
+Solution:
+Perform binary search.
+    If index found: iterate in either direction to find left and right end
+    If not found: return [-1, -1]
+
+Mistakes:
+FLAWLESS VICTORY
+
