@@ -102,4 +102,33 @@ public class BurstBallons {
                     '}';
         }
     }
+
+    protected int maxCoinsDP(int[] nums) {
+        // for all sub matrix, find the last balloon to burst
+        final int arrayLength = nums.length;
+        int [] [] dp = new int[arrayLength][arrayLength];
+
+        for(int len = 1; len <= arrayLength; len++) {
+
+            // start of each subarray
+            for(int i = 0; i <= arrayLength - len; i++) {
+                int subArrayEnd = i + len - 1; // this is index hence -1
+                int max = Integer.MIN_VALUE;
+
+                for(int j = i; j <= subArrayEnd; j++) {
+                    int left = (j == i ? 0 : dp[i][j - 1] );
+                    int right = (j == subArrayEnd ? 0 : dp[j + 1][subArrayEnd] );
+                    int rightNeigh = ( subArrayEnd + 1 == arrayLength ? 1 : nums[subArrayEnd + 1] ) ;
+                    int leftNeigh = ( i - 1 < 0 ? 1 : nums[i - 1] );
+                    int burst = leftNeigh * nums[j] * rightNeigh;
+                    int score = left + right + burst;
+                    max = Math.max(score, max);
+                }
+
+                dp[i][subArrayEnd] = max;
+            }
+        }
+
+        return dp[0][arrayLength - 1];
+    }
 }

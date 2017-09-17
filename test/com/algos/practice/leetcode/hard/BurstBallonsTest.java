@@ -22,6 +22,14 @@ public class BurstBallonsTest {
     }
 
     @Test
+    public void testMaxCoinsDP() {
+        int[] nums = new int[]{3, 1, 5, 8};
+        assertEquals(167, solve.maxCoinsDP(nums));
+
+        nums = new int[]{9};
+        assertEquals(9, solve.maxCoinsDP(nums));
+    }
+    @Test
     public void getLeft() throws Exception {
 
         int[] nums = new int[]{3, -4, -1, 5, 8};
