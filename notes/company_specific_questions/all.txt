@@ -1,0 +1,242 @@
+1. LRU Cache [H]
+----------------
+Design and implement a data structure for Least Recently Used (LRU) cache.
+It should support the following operations: get and put.
+
+get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+put(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity,
+it should invalidate the least recently used item before inserting a new item.
+
+Follow up:
+Could you do both operations in O(1) time complexity?
+
+Example:
+
+LRUCache cache = new LRUCache( 2 /* capacity */ );
+
+cache.put(1, 1);
+cache.put(2, 2);
+cache.get(1);       // returns 1
+cache.put(3, 3);    // evicts key 2
+cache.get(2);       // returns -1 (not found)
+cache.put(4, 4);    // evicts key 1
+cache.get(1);       // returns -1 (not found)
+cache.get(3);       // returns 3
+cache.get(4);       // returns 4
+
+Solution:
+Use 2 data structures. LinkedList for maintaining usage order and HashMap to search existence
+of a key in constant time.
+- Have to be little careful when maintaining order.
+- Will have to store a wrapper node as value in hashmap
+- this wrapper node will be used in linkedlist for maintaining order
+
+2. Regular Expression Matching [H]
+------------------------------------
+Implement regular expression matching with support for '.' and '*'.
+
+'.' Matches any single character.
+'*' Matches zero or more of the preceding element.
+
+The matching should cover the entire input string (not partial).
+
+The function prototype should be:
+bool isMatch(const char *s, const char *p)
+
+Some examples:
+isMatch("aa","a") ? false
+isMatch("aa","aa") ? true
+isMatch("aaa","aa") ? false
+isMatch("aa", "a*") ? true
+isMatch("aa", ".*") ? true
+isMatch("ab", ".*") ? true
+isMatch("aab", "c*a*b") ? true
+
+Solution:
+Following solution uses dynamic programming - tabulation method.
+Idea:
+Let p be pattern and s be text to be matched and j and i to be the
+pointers/indexes for each of them respectively.
+Also consider a boolean array dp where rows represent each char in s
+and columns represent each char in j. so dp[i][j] is match between s till i and p till j.
+We need to go to the end of the pattern and string to determine the match.
+Why can't i fail fast? Consider s = y and p = x*y now s[0] != p[0], if we fail fast it
+would be wrong because pattern says: 0 or more character of x.
+Thus we need to carry forward the previously calculated results and move forward.
+
+if p[j] == s[i] || p[j] == '.':
+     dp[i][j] = dp[i-1][j-1]
+else if p[j] == '*':
+     dp[i][j] = dp[i][j - 2] // assumes 0 occurrences of x*
+     if p[j - 1] == s[i] || p[j - 1] == '.' // 1 or more occurrences
+         dp[i][j] = dp[i][j] | dp[i - 1][j] // 1a: explanation below
+     else:
+         dp[i][j] = false;
+
+1a:
+ Consider p = xa* and s = xaa now for i = 2, j = 2, p[2] == '*'
+ and p[j-1] i.e. p[1] == s[2] since, there is a match we would rely or previous results.
+ We would like to check if xa* (p) matches xa (s). Hence i - 1, j as indexes.
+
+Regular expression can be expressed as a state machine. Can, suggest this method first
+in the interview. It would be much easy to code it and explain it.
+Start by creating a state machine for pattern. Then, start feeding the input string
+to the pattern state machine.
+
+3. Minimum Window Substring [H]
+------------------------------------
+Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+
+For example,
+S = "ADOBECODEBANC"
+T = "ABC"
+Minimum window is "BANC".
+
+Note:
+If there is no such window in S that covers all characters in T, return the empty string "".
+If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
+
+Answer:
+Use two pointers left and right. first advance right pointers till we have captured all the chars. We got a window.
+Now advance the left pointer thus reducing the window. If we find one of the chars have gone out of curr window,
+then advance the right to try and capture the character again. Repeat this process, everytime
+noting down the min of windows. At the end, we should have found our minimum window.
+
+4. Largest Rectangle in Histogram [H]
+--------------------------------------
+Given n non-negative integers representing the histogram's bar height where the width of each bar is 1, find the area of largest rectangle in the histogram.
+ Above is a histogram where width of each bar is 1, given height = [2,1,5,6,2,3].
+ The largest rectangle is shown in the shaded area, which has area = 10 unit.
+
+ For example,
+ Given heights = [2,1,5,6,2,3],
+ return 10.
+
+ For pics and description refer: https://leetcode.com/problems/largest-rectangle-in-histogram/#/description
+
+ Solution references:
+ Simple solution O(n^2):
+ Considering each bar as start of rectangle, iterate through rest of array for the end of
+ rectangle. This should give all possible rectangles and thus also finding the one
+ with max area.
+
+ Divide and Conquer O(nlogn): http://www.geeksforgeeks.org/largest-rectangular-area-in-a-histogram-set-1/
+ Linear O(n) http://www.geeksforgeeks.org/largest-rectangle-under-histogram/
+
+ Insights:
+ 1. For linear, use stack where values varies from 0..n-1.
+    a. push to stack if hist[i] is greater than top of stack
+ 2. When hist[i] is smaller, keep popping from stack until hist[i] is greater than top of stack
+ This establishes the right and left boundaries of the rectangle. We calculate rectangle area for every popped bar.
+ leftIndex = poppedIndex - 1
+ rightIndex = currentIndex
+ height = poppedValue
+
+5. Maximal rectangle [H]
+-------------------------
+Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.
+
+For example, given the following matrix:
+
+1 0 1 0 0
+1 0 1 1 1
+1 1 1 1 1
+1 0 0 1 0
+Return 6.
+
+Insights: Maintain a height array: H. Using this array, find largest rectangle for each row.
+!: While calculating height array reset to 0 when matrix[row][i] == 0
+
+6. Living People ( CTCI ) [M]
+-----------------------------
+Problem:
+ * Given a list of people with their birth and death years, implement a method to compute the year with the most number
+ * of people alive.You may assume that all people were born between 1900 and 2000 (inclusive). If a person was alive
+ * during any portion of that year, they should be included in that year's count. For example, Person (birth = 1908,
+ * death = 1909) is included in the counts for both 1908 and 1909
+
+Insights:
+1. Brute force solution: create a hash map with keys as year and value as # of people alive. Then increase the values
+as we scan the list of people. O(n*m) n : # of people, m: monitored time span
+2. Can we sort the list?
+3. Try creating sorted lists by death and birth
+
+Solution:
+1. Create two lists: sortedByBirth and sortedByDeath. Maintain currAlive, maxAlive and maxAliveYear. Then traverse
+through sortedBirth list, incrementing currAlive for each noted birth i.e. a value in sortedByBirth list and
+decrement currAlive for every noted death i.e. a value in sortedByDeath.
+Careful:
+1. birthYear <= deathYear , why? because deathYear is inclusive. Example: 1-1, should count towards currAlive at year 1.
+
+sortedByBirth list
+
+Mistakes:
+1. When optimizing, only thought of sorting it by birth. This took me in wrong direction of using variant of
+"mergeinterval" problem - which obviously was a wrong approach. I should have smelled the wrong direction when the
+solution got complicated to describe.
+
+7. Merge Intervals [M]
+----------------------
+Given a collection of intervals, merge all overlapping intervals.
+
+For example,
+Given [1,3],[2,6],[8,10],[15,18],
+return [1,6],[8,10],[15,18].
+
+Solution:
+The idea is to sort the intervals by their starting points. Then, we take the first interval and compare its end
+with the next intervals starts. As long as they overlap, we update the end to be the max end of the overlapping
+intervals. Once we find a non overlapping interval, we can add the previous "extended" interval and start over.
+Sorting takes O(n log(n)) and merging the intervals takes O(n). So, the resulting algorithm takes O(n log(n)).
+
+Mistakes:
+- unnecessarily complicated simple solution
+
+8. Insert Interval [H]
+------------------------
+Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
+You may assume that the intervals were initially sorted according to their start times.
+
+Example 1:
+Given intervals [1,3],[6,9], insert and merge [2,5] in as [1,5],[6,9].
+
+Example 2:
+Given [1,2],[3,5],[6,7],[8,10],[12,16], insert and merge [4,9] in as [1,2],[3,10],[12,16].
+This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10]
+
+Solution:
+curr -> each interval in intervals
+while(curr.end < newInterval.start): // example: curr = [1,2] and newInterval = [4,9]
+        move ahead because merged range if any is ahead of curr
+        why? because newInterval cant be merged with curr
+// when we are here, it means
+either we are done with all the intervals -> append the newInterval and return the result
+OR
+we have found a curr where curr.end >= newIntervals.start
+while(curr.start <= newInterval.end):
+    merge.start = min(merge.start, curr.start, newInterval.start)
+    merge.end = max(merge.end, curr.end, newInterval.end)
+if we couldn't merge it means last element in intervals: last.start > newInterval.end
+example: intervals  [[1,5]], newInterval = [0,0], expectedAns = [[0,0],[1,5]]
+i.e. the newInterval lies before the start of the interval list, so prepend the newInterval
+
+mistakes:
+1. didn't consider cases
+    a. newInterval coming before start of interval list
+    b. newInterval coming after end of interval list
+2. for merging newInterval into lists, didn't understand "out of range" concept clearly in the first pass
+
+9. Diving Board ( CTCI ) [M]
+----------------------------
+Diving Board: You are building a diving board by placing a bunch of planks of wood end-to-end. There are two types of
+planks, one of length shorter and one of length longer. You must use exactly K planks of wood.Write a method to generate
+all possible lengths for the diving board.
+
+Solution:
+To find different lengths, we need to choose all possible combinations of shorter and longer planks. How can I do it?
+Well lets say i = # of shorter planks selected, j = # of longer planks selected. Now j = k - i. Thus if we iterate
+from 0..k for i, we will get all the lengths. sum = i * shorter + (k - i) * j
+
+Mistakes:
+1. Didn't consider using hashset for accounting for duplicate length sums
+
