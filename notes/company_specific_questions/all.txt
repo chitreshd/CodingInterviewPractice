@@ -240,3 +240,63 @@ from 0..k for i, we will get all the lengths. sum = i * shorter + (k - i) * j
 Mistakes:
 1. Didn't consider using hashset for accounting for duplicate length sums
 
+10. Text Justification [H]
+----------------------------
+Given an array of words and a length L, format the text such that each line has exactly L characters and is fully
+(left and right) justified. You should pack your words in a greedy approach; that is, pack as many words as you can
+in each line. Pad extra spaces ' ' when necessary so that each line has exactly L characters. Extra spaces between
+words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between
+words, the empty slots on the left will be assigned more spaces than the slots on the right.
+
+For the last line of text, it should be left justified and no extra space is inserted between words.
+
+For example,
+words: ["This", "is", "an", "example", "of", "text", "justification."]
+L: 16.
+
+Return the formatted lines as:
+[
+   "This    is    an",
+   "example  of text",
+   "justification.  "
+]
+
+Leetcode problem has many corner cases, which needs to be addressed. Haven't solved this problem correctly yet.
+But MIT open courseware addresses a more generic version of this:
+Problem: Split text into ?good? lines
+Ref: https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/lecture-videos/MIT6_006F11_lec20.pdf
+
+In general, this is a DP problem.
+Revision of DP steps:
+1. Identify sub problems
+2. Guess a solution for each sub-problem
+3. Find the recurrence relationship
+4. Topological Ordering
+5. Solve the original problem
+
+
+We can apply above steps to the problem.
+A thought: How do i know, where to split a line? I don't so i will guess. I can guess for all the suffixes.
+Example: [this is mat that is cat], maxWidth: 7. Where should i split?
+I can guess my first split at i = 0 and with that i can guess other splits. Thus after selecting one split, remaining
+ are my suffixes on which i must repeat similar process.
+This leads to following:
+subproblems being: suffixes, number of subproblems = # of suffixes = n
+guesses at each level: guessing splits = # of splits = n
+thus: O(n^2)
+1. Identify sub problems: suffixes
+2. Guess a solution for each sub-problem: guess badness score for each combination
+3. Find the recurrence relationship:
+? DP[i] = min(badness (i,j)+DP[j] for j in range (i+1,n+1))
+? DP[n]=0
+=> time per subproblem = ?(n)
+
+4. Topological Ordering: fori=n,n?1,...,1,0
+5. Solve the original problem: To solve the original problem we need to maintain parent pointers. At each successful
+split we should maintain a pointer for choosen index. We can then use these indexes to re-construct the justified
+paragraph.
+
+11. Parantheiszing
+12. Balloon Burst
+13. Evaluating Boolean expression
+14.

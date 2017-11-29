@@ -23,6 +23,19 @@ public class Skyline {
         }
     };
 
+    public List<int[]> getSkyline_v2(int [][] buildings) {
+        List<int []> result = new ArrayList<>();
+
+        List<Triplet> triplets = split(buildings);
+        Collections.sort(triplets, pairCompatator);
+        int max = 0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>(10, descCompatator);
+        for(int i = 0; i < triplets.size() - 1; i++) {
+            
+        }
+        return null;
+    }
+
     public List<int[]> getSkyline(int[][] buildings) {
         List<int []> result = new ArrayList<>();
 
