@@ -362,4 +362,33 @@ output = [24, 12,8,6], runningLeft = 2
 
 mistakes: FLAWLESS VICTORY
 
+17. Increasing Triplet Subsequence [M]
+--------------------------------------
+Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the array.
+
+Formally the function should:
+Return true if there exists i, j, k
+such that arr[i] < arr[j] < arr[k] given 0 ? i < j < k ? n-1 else return false.
+Your algorithm should run in O(n) time complexity and O(1) space complexity.
+
+Examples:
+Given [1, 2, 3, 4, 5],
+return true.
+
+Given [5, 4, 3, 2, 1],
+return false.
+
+Solution:
+insight: maintain 2 elements and update as we go, then if we have found a element which is greater than both we have found triplet
+
+[14 4 15 8  12 9 10] , small = max, large= max
+14, small = 14, big = max
+4, small = 4, big = max
+15, small = 4, big = 15
+8, small = 4, big = 8
+
+Mistakes: Couldnt come up with any ideas as to how to solve this problem , all the ideas i had were way off.
+
+
+
 
