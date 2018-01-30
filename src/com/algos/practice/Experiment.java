@@ -10,24 +10,16 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Experiment {
 
     public static void main(String[] args) throws IllegalAccessException {
-        try {
-            exceptionThrower();
-        } catch (IllegalAccessException e) {
-            System.out.println("in illegalaccessexception, rethrowing");
-            throw e;
-        } catch (Exception ex) {
-            System.out.println("in exception");
-        }
-        finally {
-            System.out.println("in finally");
-        }
+        int outOfbound = Integer.MAX_VALUE + 1;
+
+        System.out.println(Integer.toBinaryString(outOfbound));
+        System.out.println(Integer.toBinaryString(Integer.MAX_VALUE));
+        System.out.println(outOfbound < 0);
 
     }
 
 
-    private static void exceptionThrower() throws IllegalAccessException {
-        throw new IllegalAccessException("bad state");
-    }
+
 
 
 

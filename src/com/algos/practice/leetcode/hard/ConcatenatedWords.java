@@ -67,4 +67,30 @@ public class ConcatenatedWords {
 
     }
 
+    protected int isConcWord(String word, Set<String> dict, int start, int [] result) {
+
+        if(start >= word.length()) {
+            return 1;
+        }
+
+        if(result[start] != 0) {
+            return result[start];
+        }
+
+        for(int i = start; i < word.length(); i++) {
+
+            String currWord = word.substring(start, i + 1);
+            if(dict.contains(currWord)) {
+                int suffixResult = isConcWord(word, dict, i + 1, result);
+                if(suffixResult == 1) {
+                    result[start] = 1;
+                    return result[start];
+                }
+            }
+        }
+
+        result[start] = -1;
+        return result[start];
+    }
+
 }

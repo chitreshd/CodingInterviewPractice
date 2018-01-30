@@ -97,4 +97,88 @@ public class CountOfSmallerNumbersAfterSelf {
     private static void print(int i) {
         System.out.println(String.format("Search path: %s, Update Path: %s", getPathToRoot(i), getPathToLeaf(i,5)));
     }
+
+
+    protected List<Integer> doCountSmaller(int [] nums) {
+        Pair [] pairs = convert(nums);
+        int [] result = new int[nums.length];
+
+        doMergeSort(pairs, 0, nums.length - 1, result);
+
+        List<Integer> intResult = new ArrayList<>();
+        for(int i : result) {
+            intResult.add(i);
+        }
+        return intResult;
+
+    }
+
+    // wont handle duplicate
+    protected Pair [] doMergeSort(Pair [] pairs, int start, int end, int [] result) {
+
+        if(start == end) {
+            return new Pair[] {pairs[start]};
+        }
+
+        int middle = (start + end) / 2;
+        Pair [] left = doMergeSort(pairs, start, middle, result);
+        Pair [] right = doMergeSort(pairs, middle + 1, end, result);
+
+        Pair [] merged = new Pair[left.length + right.length];
+
+        int leftP = 0;
+        int rightP = 0;
+        int mergedP = 0;
+
+        while(leftP < left.length && rightP < right.length) {
+            if(right[rightP].value < left[leftP].value) {
+                merged[mergedP] = right[rightP];
+                rightP++;
+            } else {
+                // we are picking element from left array so modify the result array
+                Pair curr = left[leftP];
+                merged[mergedP] = curr;
+                leftP++;
+                result[curr.index] = result[curr.index] + rightP;
+            }
+            mergedP++;
+        }
+
+        while(leftP < left.length) {
+            Pair curr = left[leftP];
+            merged[mergedP] = curr;
+            leftP++;
+            result[curr.index] = result[curr.index] + rightP;
+            mergedP++;
+        }
+
+        while(rightP < right.length) {
+            merged[mergedP] = right[rightP];
+            rightP++;
+            mergedP++;
+        }
+
+        return merged;
+    }
+
+    private Pair [] convert(int [] nums) {
+        Pair [] pairs = new Pair[nums.length];
+
+        for(int i = 0; i < nums.length; i++) {
+            Pair p = new Pair(i, nums[i]);
+            pairs[i] = p;
+        }
+
+        return pairs;
+    }
+
+    class Pair {
+        int index;
+        int value;
+
+        Pair(int index, int value) {
+            this.index = index;
+            this.value = value;
+        }
+    }
 }

@@ -15,4 +15,13 @@ public class IncreasingTripletSubseqTest {
 
     }
 
+    @Test
+    public void increasingNums() throws Exception {
+        assertTrue(solve.increasingNums(new int[]{1, 2, 3, 4, 5}));
+        assertTrue(solve.increasingNums(new int[]{14, 4, 15, 8, 12, 9, 10}));
+        assertFalse(solve.increasingNums(new int[]{5, 4, 3, 2, 1}));
+        assertFalse(solve.increasingNums(new int[]{1, 1, 1, 1, 1, 1}));
+
+
+    }
 }
