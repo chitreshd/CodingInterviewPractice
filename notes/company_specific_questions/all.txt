@@ -227,6 +227,8 @@ mistakes:
     b. newInterval coming after end of interval list
 2. for merging newInterval into lists, didn't understand "out of range" concept clearly in the first pass
 
+Key Insight: When you draw out points and range on board, it becomes clear how and when the intervals would merge.
+
 9. Diving Board ( CTCI ) [M]
 ----------------------------
 Diving Board: You are building a diving board by placing a bunch of planks of wood end-to-end. There are two types of
