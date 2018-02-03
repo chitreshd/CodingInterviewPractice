@@ -2,6 +2,10 @@ package com.algos.practice.leetcode.hard;
 
 import sun.jvm.hotspot.utilities.Assert;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by cdeshpande on 12/14/16.
  */
@@ -83,18 +87,30 @@ public class FindKthLexicographicalNode {
     }
 
     public static void main(String[] args) {
-        execute(13,2, 10);
+        /*execute(13,2, 10);
         //execute(190,78, 17);
         execute(10,2, 10);
         //execute(10,2, 2);
-        execute(100,100, 99);
+        execute(100,100, 99);*/
         //System.out.println(isEndOfLevel(0));
+        printOrder(13);
+        printOrder(130);
     }
 
     private static void execute(int n, int k, int expected) {
         int ans = findKthSmallestNode(n,k);
         System.out.println(String.format("n: %s, k: %s, lexical node: %s", n, k, ans));
         Assert.that(ans == expected, "incorrect ans");
+    }
+
+    public static void printOrder(int n) {
+        List<String> nums = new ArrayList<>();
+        for(int i = 1; i <= n;i++) {
+            nums.add(Integer.toString(i));
+        }
+        Collections.sort(nums);
+        System.out.println(nums);
+        System.out.println(calSteps(1, 2, 340));
     }
 
 }
