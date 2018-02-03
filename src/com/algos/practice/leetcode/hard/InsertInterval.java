@@ -137,4 +137,47 @@ public class InsertInterval {
             return "(" + start + ", " +end + ")";
         }
     }
+
+    protected List<Interval> revisedAndSimplified(List<Interval> intervals, Interval newInterval) {
+        List<Interval> result = new ArrayList<>();
+
+        if(intervals.isEmpty()) {
+            result.add(newInterval);
+            return result;
+        }
+
+        // lets add all the intervals which are to the left of new interval
+        Iterator<Interval> intIterator = intervals.iterator();
+
+        Interval curr = intIterator.hasNext() ? intIterator.next() : null;
+
+        while(curr != null && curr.end < newInterval.start) {
+            result.add(curr);
+            curr = intIterator.hasNext() ? intIterator.next() : null;
+        }
+
+        if(curr == null) {
+            result.add(newInterval);
+            return result;
+        }
+
+        // lets evaluate if we have merge candidates
+        Interval merged = new Interval(newInterval.start, newInterval.end);
+        while(curr != null && curr.start <= newInterval.end) {
+            merged.start = Math.min(merged.start, curr.start);
+            merged.end = Math.max(merged.end, curr.end);
+            curr = intIterator.hasNext() ? intIterator.next() : null;
+        }
+
+        // either we have merged some intervals or have just added the newInterval
+        result.add(merged);
+
+        // rest of all the intervals are on the right
+        while(curr != null) {
+            result.add(curr);
+            curr = intIterator.hasNext() ? intIterator.next() : null;
+        }
+
+        return result;
+    }
 }
