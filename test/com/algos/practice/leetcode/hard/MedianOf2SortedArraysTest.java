@@ -9,8 +9,27 @@ import static org.junit.Assert.*;
  * Created by cdeshpande on 6/5/17.
  */
 public class MedianOf2SortedArraysTest {
+
+
     private MedianOf2SortedArrays solution = new MedianOf2SortedArrays();
 
+    @Test
+    public void findMedianSortedArraysRev2WithTotalSumAsOdd() throws Exception {
+        int [] nums1 = new int[] {1, 3};
+        int [] nums2 = new int[] {2};
+        assertEquals(2.0, solution.findMedianSortedArraysRev2(nums1, nums2), 0.0);
+        nums1 = new int[] {1, 2};
+        nums2 = new int[] {3};
+        assertEquals(2.0, solution.findMedianSortedArraysRev2(nums2, nums1), 0.0);
+    }
+
+    @Test
+    public void findMedianSortedArraysRev2WithTotalSumAsEven() throws Exception {
+        int [] nums1 = new int[] {1, 3};
+        int [] nums2 = new int[] {2, 4};
+        assertEquals(2.5, solution.findMedianSortedArraysRev2(nums1, nums2), 0.0);
+
+    }
 
     @Test
     public void testForTwoNonEmptyArraysWithTotalSumAsOdd() {

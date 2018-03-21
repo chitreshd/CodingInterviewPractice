@@ -18,4 +18,14 @@ public class MinimumWindowSubstringTest {
         assertEquals(solution.minWindow("ab","a"), "a");
     }
 
+    @Test
+    public void minWindowRevision() throws Exception {
+        assertEquals(solution.minWindowRevision("ADOBECODEBANC","ABC"), "BANC");
+        assertEquals(solution.minWindowRevision("AAAAABC","ABC"), "ABC");
+        assertEquals(solution.minWindowRevision("ab","a"), "a");
+        assertEquals(solution.minWindowRevision("AbabbbAbaA","Bab"), "");
+
+
+    }
+
 }
