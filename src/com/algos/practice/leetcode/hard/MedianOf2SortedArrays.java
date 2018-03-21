@@ -188,5 +188,83 @@ public class MedianOf2SortedArrays {
         return arr == null || arr.length == 0;
     }
 
+    public double findMedianSortedArraysRev2(int[] nums1, int[] nums2) {
+
+        if(nums1.length > nums2.length) {
+            return doFindMedianSortedArrays(nums2, nums1);
+        } else {
+            return doFindMedianSortedArrays(nums1, nums2);
+        }
+
+
+    }
+
+    protected double doFindMedianSortedArrays(int [] A, int [] B) {
+        int m = A.length; // will be represented by i
+        int n = B.length; // will be represented by j
+        int c = 0;
+        if(( m + n )% 2 != 0) {
+            // odd total length
+            c = 1;
+        }
+
+        int start = 0;
+        int end = m;
+        int halfLen = (1 + n + m) / 2;
+        while(start <= end) {
+
+            int i = (start + end) / 2;
+            int j = halfLen - i;
+            if(i > 0 && A[i - 1] > B[j]) {
+                // decrease i
+                end = i - 1;
+            } else if (i < m && B[j - 1] > A[i]) {
+                // increase i
+                start = i + 1;
+            } else {
+                // coming here means we have found the the position of i such that it splits
+                // combined array so that max(leftPart) > min(rightPart)
+                // if c is 0 that is total length is even
+                if(c == 0) {
+                    /**
+                     * Note: i and j represents the cut in the array. its the length of leftPart.
+                     * Coming here means leftPart equal to rightPart with median
+                     * condition satisfied. Thus we use i - 1 and j - 1 as indexes to get the
+                     * max of leftPart (because its the last element of leftArray to find out the median.)
+                     * and i and j indexes to get the rightPart (as its the start of rightArray)
+                     */
+                    int maxLeftPart = max(A, i - 1, B, j - 1);
+                    int minRightPart = min(A, i , B, j);
+                    return (( maxLeftPart + minRightPart ) * 1.0) / 2;
+                } else {
+                    /**
+                     * Note: i and j represents the cut in the array. its the length of leftPart.
+                     * Coming here means leftPart is one element larger than rightPart with median
+                     * condition satisfied. Thus we use i - 1 and j - 1 as indexes; because its the
+                     * last element of leftArray to find out the median.
+                     */
+                    int maxLeftPart = max(A, i - 1, B, j - 1);
+                    return maxLeftPart;
+                }
+
+            }
+
+        }
+        //error, shouldn't come here
+        return -1;
+    }
+
+    /*private int max(int [] A, int i, int [] B, int j) {
+        int a = (i < 0 || i >= A.length) ? 0 : A[i];
+        int b = (j < 0 || j >= B.length) ? 0 : B[j];
+        return Math.max(a,b);
+    }
+
+    private int min(int [] A, int i, int [] B, int j) {
+        int a = (i < 0 || i >= A.length) ? Integer.MAX_VALUE : A[i];
+        int b = (j < 0 || j >= B.length) ? Integer.MAX_VALUE : B[j];
+        return Math.min(a,b);
+    }*/
+
 
 }

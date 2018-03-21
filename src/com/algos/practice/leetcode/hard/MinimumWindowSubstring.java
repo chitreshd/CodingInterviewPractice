@@ -1,5 +1,10 @@
 package com.algos.practice.leetcode.hard;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Created by cdeshpande on 6/10/17.
  *
@@ -11,6 +16,92 @@ package com.algos.practice.leetcode.hard;
  Minimum window is "BANC".
  */
 public class MinimumWindowSubstring {
+
+    public String minWindowRevision(String s, String t) {
+        Pattern p = new Pattern(t);
+        int left = 0, right = 0;
+        String currWindow = null;
+        String minWindow = null;
+        while(right < s.length()) {
+
+            while(!p.found() && left < s.length()) {
+                p.add(s.charAt(left));
+                left++;
+            }
+
+            while(p.found() && right <= left) {
+                currWindow = s.substring(right, left);
+                if(minWindow == null || minWindow.length() > currWindow.length()) {
+                    minWindow = currWindow;
+                }
+                p.remove(s.charAt(right));
+                right++;
+            }
+
+            if(left >= s.length()) {
+                break;
+            }
+        }
+
+        return minWindow == null ? "" : minWindow;
+
+    }
+
+    public static class Pattern {
+        private Map<Character, Integer> freqMap;
+
+        //private int foundFlag;
+        /*
+        Since int doesnt account for integers and CAPs alphabet, moving to hashset
+        a hashset has to be empty for found to be true
+        when freq of c > 0: enter into hashset
+        when freq of c < 0: remove from hashset
+         */
+        private Set<Character> set;
+
+        public Pattern(String patternStr) {
+            set = new HashSet<>();
+            freqMap = new HashMap<>();
+            for(char c : patternStr.toCharArray()) {
+                int currCount = freqMap.containsKey(c) ? freqMap.get(c) : 0;
+                freqMap.put(c, currCount + 1);
+                set.add(c);
+                /*int bit = c - 'A';
+                foundFlag |= 1 << bit;*/
+            }
+        }
+
+
+        public void add(char ch) {
+            if(freqMap.containsKey(ch)) {
+                int currCount = freqMap.get(ch);
+                currCount--;
+                if(currCount <= 0) {
+                    /*int bit = ch - 'a';
+                    foundFlag &= ~(1 << bit);*/
+                    set.remove(ch);
+                }
+                freqMap.put(ch, currCount);
+            }
+        }
+
+        public void remove(char ch) {
+            if(freqMap.containsKey(ch)) {
+                int currCount = freqMap.get(ch);
+                currCount++;
+                if(currCount > 0) {
+                    /*int bit = ch - 'a';
+                    foundFlag |= (1 << bit);*/
+                    set.add(ch);
+                }
+                freqMap.put(ch, currCount);
+            }
+        }
+
+        public boolean found() {
+            return set.isEmpty();
+        }
+    }
 
     public String minWindow(String s, String t) {
         int[] charCounter = new int[128]; // this will only work for ASCII strings. For unicode, bump this to 256.
@@ -59,6 +150,6 @@ public class MinimumWindowSubstring {
     }
 
     public static void main(String[] args) {
-        new MinimumWindowSubstring().minWindow("","");
+        System.out.println("A - a: " + (long)('1' - 'A'));
     }
 }
