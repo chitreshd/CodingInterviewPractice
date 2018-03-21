@@ -12,7 +12,15 @@ public class Skyline {
     private Comparator<? super Triplet> pairCompatator = new Comparator<Triplet>() {
         @Override
         public int compare(Triplet o1, Triplet o2) {
-            return Integer.compare(o1.x, o2.x);
+            int compResult = Integer.compare(o1.x, o2.x); // -1 if o1.x < o2.x
+            if(compResult == 0) {
+                if(o2.start) { // o1 > o2
+                    return 1;
+                } else {
+                    return -1; // o1 < o2
+                }
+            }
+            return compResult;
         }
     };
 
@@ -42,30 +50,54 @@ public class Skyline {
         List<Triplet> triplets = split(buildings);
         Collections.sort(triplets, pairCompatator);
         int max = 0;
-        PriorityQueue<Integer> pq = new PriorityQueue<>(10, descCompatator);
+        PriorityQueue<Integer> pq = new PriorityQueue<>(10, Collections.<Integer>reverseOrder());
         pq.add(0);
         for(Triplet triplet : triplets) {
             if(triplet.start) {
                 // start of rectangle
                 pq.add(triplet.h);
                 if(max != pq.peek()) {
-                    max = pq.peek();
                     // max height changed
-                    result.add(new int[]{triplet.x, max});
+                    max = pq.peek();
+                    // check if the x co-ordinate changed
+                    if(!result.isEmpty()) {
+                        int [] last = result.get(result.size() - 1);
+                        if(last[0] == triplet.x) {
+                            // co-ordinate didn't change only height changed
+                            last[1] = max;
+                        } else {
+                            result.add(new int[]{triplet.x, max});
+                        }
+                    } else {
+                        result.add(new int[]{triplet.x, max});
+                    }
+
                 }
             } else {
                 // end of rectangle
                 pq.remove(triplet.h);
                 if(max != pq.peek()) {
-                    max = pq.peek();
                     // max height changed
-                    result.add(new int[]{triplet.x, max});
+                    max = pq.peek();
+                    // check if the x co-ordinate changed
+                    if(!result.isEmpty()) {
+                        int [] last = result.get(result.size() - 1);
+                        if(last[0] == triplet.x) {
+                            // co-ordinate didn't change only height changed
+                            last[1] = max;
+                        } else {
+                            result.add(new int[]{triplet.x, max});
+                        }
+                    } else {
+                        result.add(new int[]{triplet.x, max});
+                    }
+
                 }
 
             }
         }
-        System.out.println("Before cleaning: " + convertToString(result));
-        result = cleanSameLineCoordinates(result);
+        //System.out.println("Before cleaning: " + convertToString(result));
+        //result = cleanSameLineCoordinates(result);
         return result;
     }
 
