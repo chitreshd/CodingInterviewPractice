@@ -299,6 +299,10 @@ thus: O(n^2)
 split we should maintain a pointer for choosen index. We can then use these indexes to re-construct the justified
 paragraph.
 
+Note: The question in leetcode needs a greedy approach - its mentioned in the question text. Text Justification does
+have two solutions in general : greedy ( MS Word ) and DP ( LATEX ).
+Sample DP: http://dynamicallyinvokable.blogspot.com/2016/10/dynamic-programming-in-5-easy-steps.html
+
 11. Parantheiszing
 12. Balloon Burst
 13. Evaluating Boolean expression
