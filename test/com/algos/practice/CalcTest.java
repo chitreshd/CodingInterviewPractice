@@ -1,6 +1,5 @@
 package com.algos.practice;
 
-import javafx.util.Pair;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

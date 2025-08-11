@@ -1,6 +1,6 @@
 package com.algos.practice.leetcode.hard;
 
-import com.sun.tools.javac.util.Pair;
+import com.algos.practice.util.Pair;
 
 import java.util.*;
 

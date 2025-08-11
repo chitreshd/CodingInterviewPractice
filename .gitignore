@@ -25,3 +25,9 @@ ebay-build.xml
 .classpath
 .project
 .settings
+
+# Gradle
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+!gradle-wrapper.properties

@@ -1,11 +1,10 @@
 package com.algos.practice;
 
-import com.sun.deploy.util.ArrayUtil;
-import javafx.util.Pair;
-
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.algos.practice.util.Pair;
 
 /**
  * Created by cdeshpande on 8/10/17.
@@ -108,7 +107,4 @@ public class StripeInterview {
         }
         return null;
     }
-
-
-
 }

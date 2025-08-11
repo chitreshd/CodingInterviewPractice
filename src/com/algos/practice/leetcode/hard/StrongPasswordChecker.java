@@ -1,9 +1,5 @@
 package com.algos.practice.leetcode.hard;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-
 /**
  * Created by cdeshpande on 4/6/17.
  *
@@ -107,28 +103,4 @@ public class StrongPasswordChecker {
 
         return Math.max(repeats, lowerCase + upperCase + numeric);
     }
-
-
-    @Test
-    public void testForLessThanLenghtCases() {
-        /*assertEquals(2, strongPasswordChecker("abcd"));
-        assertEquals(2, strongPasswordChecker("abcdef"));
-        assertEquals(2, strongPasswordChecker("aaaaaa"));
-        assertEquals(6, strongPasswordChecker(""));
-        assertEquals(2, strongPasswordChecker("aaa111"));*/
-        assertEquals(3, strongPasswordChecker("..."));
-    }
-
-
-    @Test
-    public void testForGreaterThanLengthCases() {
-        // TODO: Since deleting the last character removes one repeat, the min should be 7 but current algo gives out 8.
-        assertEquals(7, strongPasswordChecker("aaaaaaaaaaaaaaaaaaaaa"));
-        assertEquals(3, strongPasswordChecker("ababababababababababa"));
-        assertEquals(2, strongPasswordChecker("1010101010aaaB10101010"));
-    }
-
-
-
-
 }

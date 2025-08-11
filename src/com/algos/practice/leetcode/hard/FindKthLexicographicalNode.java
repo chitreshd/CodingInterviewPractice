@@ -1,7 +1,5 @@
 package com.algos.practice.leetcode.hard;
 
-import sun.jvm.hotspot.utilities.Assert;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -100,7 +98,9 @@ public class FindKthLexicographicalNode {
     private static void execute(int n, int k, int expected) {
         int ans = findKthSmallestNode(n,k);
         System.out.println(String.format("n: %s, k: %s, lexical node: %s", n, k, ans));
-        Assert.that(ans == expected, "incorrect ans");
+        if (ans != expected) {
+            throw new RuntimeException("incorrect ans: expected " + expected + " but got " + ans);
+        }
     }
 
     public static void printOrder(int n) {
@@ -112,5 +112,4 @@ public class FindKthLexicographicalNode {
         System.out.println(nums);
         System.out.println(calSteps(1, 2, 340));
     }
-
 }
