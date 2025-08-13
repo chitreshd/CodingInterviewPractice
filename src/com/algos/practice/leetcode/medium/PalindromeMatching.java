@@ -45,7 +45,7 @@ public class PalindromeMatching {
 
     private void addInResults(List<List<String>> results, List<List<String>> remainingResults, String word) {
         for(List<String> remainingResult : remainingResults) {
-            ArrayList<String> clne = (ArrayList<String>) ((ArrayList<String>) remainingResult).clone();
+            ArrayList<String> clne = new ArrayList<>(remainingResult);
             clne.add(0,word);
             results.add(0,clne);
         }

@@ -100,7 +100,7 @@ public class TallestStack {
 
         }
 
-        ArrayList<Box> maxClone = (ArrayList<Box>) max.clone();
+        ArrayList<Box> maxClone = new ArrayList<>(max);
         maxClone.add(box);
         results.put(box, maxClone);
 

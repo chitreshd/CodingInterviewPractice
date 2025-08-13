@@ -27,7 +27,7 @@ public class LetterCombinations {
 
 
     private List<String> lc(String digits) {
-        List<String> result = new ArrayList();
+        List<String> result = new ArrayList<>();
         if(digits == null || digits.isEmpty()) {
             result.add("");
             return result;

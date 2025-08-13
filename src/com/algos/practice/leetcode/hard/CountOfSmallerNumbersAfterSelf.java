@@ -52,7 +52,7 @@ public class CountOfSmallerNumbersAfterSelf {
     }
 
     public static List<Integer> getPathToLeaf(int i, int size) {
-        List<Integer> path = new ArrayList();
+        List<Integer> path = new ArrayList<>();
         while (i < size) {
             path.add(i);
             i += i & -i;
@@ -62,7 +62,7 @@ public class CountOfSmallerNumbersAfterSelf {
 
 
     public static List<Integer> getPathToRoot(int i) {
-        List<Integer> path = new ArrayList();
+        List<Integer> path = new ArrayList<>();
         while (i > 0) {
             path.add(i);
             i -= i & -i;

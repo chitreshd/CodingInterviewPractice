@@ -89,7 +89,7 @@ public class ReversePairs {
 
 
     private  List<Integer> getPathToRoot(int i) {
-        List<Integer> path = new ArrayList();
+        List<Integer> path = new ArrayList<>();
         while (i > 0) {
             path.add(i);
             i -= i & -i;
