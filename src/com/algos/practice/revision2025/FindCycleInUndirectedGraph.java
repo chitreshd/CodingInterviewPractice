@@ -23,7 +23,7 @@ public class FindCycleInUndirectedGraph {
      * Algo: A - B - C
      *             - D - A
      * vertices: [ A, B, C, D ]
-     * edges: [ AB, BC, DB, DA ]
+     * edges: [ AB, BA, BC, CB, DB, BD, DA, AD ]
      *
      * 
      * @param graph The undirected graph to check for cycles
@@ -42,6 +42,7 @@ public class FindCycleInUndirectedGraph {
                 continue;
             }
 
+            // TODO: revise - tracking parent is very important, because you dont want to chase parent again..GOTO-B
             boolean cycle = hasCycleDFS(node, null, visited);
             if (cycle) {
                 return true;
@@ -62,6 +63,7 @@ public class FindCycleInUndirectedGraph {
         visited.add(node);
         for (Map.Entry<Node<Character>, Integer> edge : node.getEdges()) {
             Node<Character> neighbour = edge.getKey();
+            // TODO: B see how we didn't chase parent, or else every graph will be cycle ( self cycle )
             if ( neighbour.equals(parent)) {
                 continue;
             }
