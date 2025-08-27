@@ -299,7 +299,7 @@ public class IncreasingSubsequenceLength3Test {
     void testBoundaryAndEdgeCombinations() {
         // Test combinations of edge cases
         
-        
+
         // Array with all negative except one
         int[] arr2 = {-5, -3, -1, 0};
         assertTrue(solution.hasIncreasingSubsequence(arr2));
